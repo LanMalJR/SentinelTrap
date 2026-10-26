@@ -10,3 +10,9 @@ services:
 
     security_opt:
       - no-new-privileges:true
+
+    volumes:
+      - cowrie-data:/cowrie/cowrie-git/var
+
+volumes:
+  cowrie-data:

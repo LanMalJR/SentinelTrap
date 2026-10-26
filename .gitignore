@@ -218,3 +218,50 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+
+# ============================================================
+# SentinelTrap - Project-specific exclusions
+# ============================================================
+
+# Cowrie honeypot logs and captured session data
+cowrie-test.json
+cowrie-backup/
+cowrie-data/
+cowrie-logs/
+
+# Security event data and session recordings
+*.jsonl
+*.log
+*.log.*
+*.sqlite3
+*.db
+*.db-journal
+*.pcap
+*.pcapng
+*.tty
+
+# Local datasets
+data/*
+!data/.gitkeep
+
+# Environment configuration and secrets
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+
+# Docker local overrides
+docker-compose.override.yml
+compose.override.yml
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Local temporary files
+*.tmp
+*.bak
+*.swp
