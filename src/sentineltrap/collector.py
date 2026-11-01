@@ -1,7 +1,8 @@
 
 import json
 from pathlib import Path
-from sentineltrap.analyzer import summarize_events
+
+from sentineltrap.analyzer import summarize_events, analyze_sessions
 
 
 def read_events(file_path: str) -> list[dict]:
@@ -60,7 +61,9 @@ def group_events_by_session(events: list[dict]) -> dict[str, list[dict]]:
 
     return sessions
 
+
 if __name__ == "__main__":
+    # Load Cowrie security events
     events = read_events("cowrie-test.json")
 
     print(f"Total events loaded: {len(events)}")
@@ -90,7 +93,7 @@ if __name__ == "__main__":
             f"IP: {event.get('src_ip', 'unknown')} | "
             f"Session: {event.get('session', 'unknown')}"
         )
-    
+
     # Group security events by SSH session
     sessions = group_events_by_session(events)
 
@@ -104,8 +107,7 @@ if __name__ == "__main__":
             event_type = event.get("eventid", "unknown")
             print(f"  - {event_type}")
 
-
-    # Generate security statistics
+    # Generate overall security statistics
     summary = summarize_events(events)
 
     print("\nSecurity Summary")
@@ -113,3 +115,18 @@ if __name__ == "__main__":
 
     for metric, value in summary.items():
         print(f"{metric}: {value}")
+
+    # Analyse individual SSH sessions
+    session_reports = analyze_sessions(sessions)
+
+    print("\nIndividual Session Reports")
+    print("-" * 35)
+
+    for session_id, report in session_reports.items():
+        print(f"\nSession: {session_id}")
+        print(f"Source IP: {report['source_ip']}")
+        print(f"Total events: {report['total_events']}")
+        print(f"Successful logins: {report['successful_logins']}")
+        print(f"Failed logins: {report['failed_logins']}")
+        print(f"Commands entered: {len(report['commands'])}")
+        print(f"Duration (seconds): {report['duration_seconds']}")
